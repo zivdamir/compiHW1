@@ -8,13 +8,14 @@
 
 %option yylineno
 %option noyywrap
+esc              ([\\ntr\"0])
+hex              (\\x[0-7][0-9A-Fa-f])
+whitespace       ([ \t\n\r])
 digit            ([0-9])
 letter           ([a-zA-Z])
-letterdigit      ([a-zA-Z0-9])
-string           ([ !#-\[\]-~])
-escape           ([\\ntr\"0])
-hex              (\\x[0-7][0-9A-Fa-f])
-whitespace       ([\t\n\r ])
+letter_digit      ([a-zA-Z0-9])
+str                ([ !#-\[\]-~])
+
 
 %%
 void                                                                                return VOID;
@@ -44,12 +45,12 @@ continue                                                                        
 [<>=!]=|>|<                                                                         return RELOP;
 [-+*/]                                                                              return BINOP;
 \/\/[^\n\r]*                                                                        return COMMENT;
-{letter}{letterdigit}*                                                              return ID;
+{letter}{letter_digit}*                                                              return ID;
 ([1-9]+{digit}*)|0                                                                  return NUM;
-\"({string}|\\{escape}|{hex})*\"                                                    return STRING;
-\"({string}|(\\{escape})|{hex})*                                                    return UNCLOSED_STRING;
-\"({string}|\\{escape}|{hex})*\\[^\\ntr\"0]                                         return INVALID_ESCAPE_SEQUENCE;
-\"({string}|\\{escape}|{hex})*\\x([^0-7][0-9A-Fa-f]|[0-7][^0-9A-Fa-f]|[^0-7][^0-9A-Fa-f]|[^0-9A-Fa-f]) return INVALID_HEX;
+\"({str}|\\{esc}|{hex})*\"                                                    return str;
+\"({str}|(\\{esc})|{hex})*                                                    return UNCLOSED_str;
+\"({str}|\\{esc}|{hex})*\\[^\\ntr\"0]                                         return INVALID_esc_SEQUENCE;
+\"({str}|\\{esc}|{hex})*\\x([^0-7][0-9A-Fa-f]|[0-7][^0-9A-Fa-f]|[^0-7][^0-9A-Fa-f]|[^0-9A-Fa-f]) return INVALID_HEX;
 {whitespace}                                                                        ;
 .                                                                                   return ERROR;
 
