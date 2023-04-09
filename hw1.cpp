@@ -1,8 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "tokens.hpp"
 extern int yylex();
-#define ARR_SIZE 34
-char* token_array[ARR_SIZE] = {
+char* token_array[] = {
     "AUTO",
     "VOID",
     "INT",
@@ -37,12 +37,21 @@ char* token_array[ARR_SIZE] = {
     "UNCLOSED_STRING",
     "ERROR_HEX",
     "ERROR_ESCAPE_SEQUENCE",
-	  
   };
-void stringHandler(int token)
+void tokenHandler(int token)
 {
+    bool need_exit = false;
+    if (token == ERROR_HEX)
+    {
+        need_exit = true;
+    }
+    
+    showToken(token_array[token]);
 
-
+    if( need_exit )
+    {
+        exit(0);
+    }
 }
 void showToken(const char * name)
 {
@@ -52,16 +61,7 @@ void showToken(const char * name)
 int main(){
 	int token;
 	while(token = yylex()) {
-		if (token == NUM) {
-			showToken("NUM");
-		} else if (token == WORD) {
-			showToken("WORD");
-		} else if (token == EMAIL) {
-			showToken("EMAIL");
-		}
-        else if (token == VOID){
-            showToken("VOID");
-        }
+        showToken(token_array[token]);
     }
-	return 0;
+    return 0;
 }

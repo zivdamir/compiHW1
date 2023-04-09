@@ -34,7 +34,7 @@
     ID = 27,
     NUM = 28,
     STRING = 29,
-    ERROR=30,
+    ERROR = 30,
     UNCLOSED_STRING=31,
     ERROR_HEX=32,
     ERROR_ESCAPE_SEQUENCE=33,

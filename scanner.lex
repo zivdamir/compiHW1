@@ -11,9 +11,8 @@
 void            ('void')
 digit   		([0-9])
 letter  		([a-zA-Z])
-
 whitespace		([\t\n ])
-
+5
 %%
 void                        return VOID;  
 {digit}+          			return NUM;
