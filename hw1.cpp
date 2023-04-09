@@ -17,6 +17,9 @@ int main(){
 		} else if (token == EMAIL) {
 			showToken("EMAIL");
 		}
-	}
+        else if (token == VOID){
+            showToken("VOID");
+        }
+    }
 	return 0;
 }
