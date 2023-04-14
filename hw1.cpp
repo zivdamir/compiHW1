@@ -51,19 +51,31 @@ void print_illegal_sign_error_and_exit()
 {
     char* illegal_sign = yytext;
     cout << "Error " << illegal_sign << endl;
+    exit(0);
 }
 
 void print_unclosed_string_error_and_exit()
 {
     cout << "Error unclosed string"  << endl;
-}
-void print_unclosed_string_error_and_exit()
-{
-
+    exit(0);
 }
 void print_escape_sequence_error_and_exit()
 {
+    if(yytext is in the exercise definition& is \)
+    {
+        print_illegal_sign_error_and_exit();
+    }
 
+    cout << "Error undefined escape sequence ";
+    if(yytext is in the exercise definition& is \q)
+    {
+        cout<< "q" << endl;
+    }
+    else if(yytext is in the exercise definition& is \q)
+    {
+        cout << "xFT" << endl;
+    }
+    exit(0);
 }
 
 void tokenHandler(int token)
