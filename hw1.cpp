@@ -104,6 +104,7 @@ void showToken(const char * token_type)
     //<line_no> <token_name> <value>
     //token name is "token_type"
     string str_token_type = string(token_type);
+    string escape_chars = "nr0t\"\\";
     if (str_token_type != "STRING")
     {
         cout << yylineno << " " << token_type << " " << yytext << endl;
@@ -111,9 +112,24 @@ void showToken(const char * token_type)
     else{
         for (int i = 0; i < str_token_type.size()-1 ; i++)
         {
-            if(s[i]=='//' && )
+            
+           
+            if(str_token_type[i]=='\\') 
+            {
+                if(escape_chars.find(str_token_type[i+1]) != std::string::npos)
+                {
+                //extract string.    
+                handleLineFeed(&str_token_type, '\n', i);
+                }
+                
+            }
         }
     }
+}
+void handleLineFeed(string* str,char linefeed_symb,int index)
+{
+    (*str)[index] = linefeed_symb;
+    (*str).erase(index + 1, 1);
 }
 int main(){
 	int token;
