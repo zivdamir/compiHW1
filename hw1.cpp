@@ -42,9 +42,7 @@ void tokenHandler(int token)
 {
     if (token == ERROR_ILLEGAL_SIGN)
     {
-
-
-        exit(0);
+        print_illegal_sign_error_and_exit();
     }
     else
     
