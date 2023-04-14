@@ -1,6 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
+#include <sstream>
+#include <string>
 #include "tokens.hpp"
+
+using std::cout;
+using std::endl;
+using std::string;
+
 extern int yylex();
 char* token_array[] = {
     "AUTO",
@@ -35,16 +43,44 @@ char* token_array[] = {
     "STRING",
     "ERROR",
     "ERROR_UNCLOSED_STRING",
-    "ERROR_HEX",
+    "ERROR_ILLEGAL_SIGN",
     "ERROR_ESCAPE_SEQUENCE",
   };
+
+void print_illegal_sign_error_and_exit()
+{
+    char* illegal_sign = yytext;
+    cout << "Error " << illegal_sign << endl;
+}
+
+void print_unclosed_string_error_and_exit()
+{
+    cout << "Error unclosed string"  << endl;
+}
+void print_unclosed_string_error_and_exit()
+{
+
+}
+void print_escape_sequence_error_and_exit()
+{
+
+}
+
 void tokenHandler(int token)
 {
     if (token == ERROR_ILLEGAL_SIGN)
     {
         print_illegal_sign_error_and_exit();
     }
-    else
+    else if(token == ERROR_UNCLOSED_STRING)
+    {
+        print_unclosed_string_error_and_exit();
+    }
+    else if(token == ERROR_ESCAPE_SEQUENCE)
+    {
+        print_escape_sequence_error_and_exit();
+    }
+
     
     showToken(token_array[token]);
 }
