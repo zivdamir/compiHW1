@@ -48,9 +48,12 @@ void tokenHandler(int token)
     
     showToken(token_array[token]);
 }
-void showToken(const char * name)
+void showToken(const char * token_type)
 {
-        printf("Lex found a %s, the lexeme is %s and its length is %d\n", name, yytext, yyleng);
+    //<line_no> <token_name> <value>
+    //token name is "token_type"
+        if( )
+        printf("%d %s %s\n", yylineno, token_type, yytext);
 }
 
 int main(){
