@@ -108,9 +108,21 @@ void showToken(const char * token_type)
     else{
         for (int i = 0; i < str_token_type.size()-1 ; i++)
         {
-            if(s[i]=='//' && )
+            if(str_token_type[i]=='\\') 
+            {
+                if(str_token_type[i+1]=='n')
+                {
+                handleLineFeed(&str_token_type, '\n', i);
+                }
+                
+            }
         }
     }
+}
+void handleLineFeed(string* str,char linefeed_symb,int index)
+{
+    (*str)[index] = linefeed_symb;
+    (*str).erase(index + 1, 1);
 }
 int main(){
 	int token;
