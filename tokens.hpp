@@ -36,9 +36,8 @@
     STRING = 29,
     ERROR = 30,
     ERROR_UNCLOSED_STRING=31,
-    ERROR_HEX=32,
+    ERROR_ILLEGAL_SIGN=32,
     ERROR_ESCAPE_SEQUENCE=33,
-	  
   };
   extern int yylineno;
   extern char* yytext;
