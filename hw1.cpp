@@ -34,24 +34,21 @@ char* token_array[] = {
     "NUM",
     "STRING",
     "ERROR",
-    "UNCLOSED_STRING",
+    "ERROR_UNCLOSED_STRING",
     "ERROR_HEX",
     "ERROR_ESCAPE_SEQUENCE",
   };
 void tokenHandler(int token)
 {
-    bool need_exit = false;
-    if (token == ERROR_HEX)
+    if (token == ERROR_ILLEGAL_SIGN)
     {
-        need_exit = true;
-    }
-    
-    showToken(token_array[token]);
 
-    if( need_exit )
-    {
+
         exit(0);
     }
+    else
+    
+    showToken(token_array[token]);
 }
 void showToken(const char * name)
 {
