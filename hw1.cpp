@@ -100,10 +100,18 @@ void showToken(const char * token_type)
 {
     //<line_no> <token_name> <value>
     //token name is "token_type"
-        if( )
-        printf("%d %s %s\n", yylineno, token_type, yytext);
+    string str_token_type = string(token_type);
+    if (str_token_type != "STRING")
+    {
+        cout << yylineno << " " << token_type << " " << yytext << endl;
+    }
+    else{
+        for (int i = 0; i < str_token_type.size()-1 ; i++)
+        {
+            if(s[i]=='//' && )
+        }
+    }
 }
-
 int main(){
 	int token;
 	while(token = yylex()) {
