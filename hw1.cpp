@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <cstring>
 #include "tokens.hpp"
 
 using std::cout;
@@ -37,7 +38,7 @@ char* token_array[] = {
     "ASSIGN",
     "RELOP",
     "BINOP",
-    "COMMENT",
+    "COMMENT //",
 	"ID",
     "NUM",
     "STRING",
@@ -61,11 +62,13 @@ void print_unclosed_string_error_and_exit()
 }
 void print_escape_sequence_error_and_exit()
 {
-    if(yytext is in the exercise definition& is \)
+    int yytext_len = strlen(yytext);
+     char last_char = yytext[yytext_len-1];
+
+    if(last_char == '\\')
     {
         print_illegal_sign_error_and_exit();
     }
-
     cout << "Error undefined escape sequence ";
     if(yytext is in the exercise definition& is \q)
     {
