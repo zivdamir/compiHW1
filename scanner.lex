@@ -8,13 +8,15 @@
 
 %option yylineno
 %option noyywrap
-esc              ([\\ntr\"0])
-hex              (\\x[0-7][0-9A-Fa-f])
-whitespace       ([ \t\n\r])
-digit            ([0-9])
-letter           ([a-zA-Z])
-letter_digit      ([a-zA-Z0-9])
-str                ([ !#-\[\]-~])
+valid_esc_seq                                   (\\[\\ntr\"0])
+hex_esc_seq                                     (\\x[0-7][0-9A-Fa-f])
+invalid_esc_seq                                 (\\[^\\ntr\"0])
+invalid_hex_esc_seq                             \\x([^0-7][0-9A-Fa-f]|[0-7][^0-9A-Fa-f]|[^0-7][^0-9A-Fa-f]|[^0-9A-Fa-f])
+whitespace                                      ([ \t\n\r])
+digit                                           ([0-9])
+letter                                          ([a-zA-Z])
+letter_digit                                    ([a-zA-Z0-9])
+str_sym_s_t_not_esc_seq                         ([ !#-\[\]-~])
 
 
 %%
@@ -23,7 +25,7 @@ int                                                                             
 byte                                                                                return BYTE;
 b                                                                                   return B;
 bool                                                                                return BOOL;
-auto                                                                                return AUTO;
+override                                                                            return OVERRIDE;
 and                                                                                 return AND;
 or                                                                                  return OR;
 not                                                                                 return NOT;
@@ -45,12 +47,12 @@ continue                                                                        
 [<>=!]=|>|<                                                                         return RELOP;
 [-+*/]                                                                              return BINOP;
 \/\/[^\n\r]*                                                                        return COMMENT;
-{letter}{letter_digit}*                                                              return ID;
+{letter}{letter_digit}*                                                             return ID;
 ([1-9]+{digit}*)|0                                                                  return NUM;
-\"({str}|\\{esc}|{hex})*\"                                                    return str;
-\"({str}|(\\{esc})|{hex})*                                                    return UNCLOSED_str;
-\"({str}|\\{esc}|{hex})*\\[^\\ntr\"0]                                         return INVALID_esc_SEQUENCE;
-\"({str}|\\{esc}|{hex})*\\x([^0-7][0-9A-Fa-f]|[0-7][^0-9A-Fa-f]|[^0-7][^0-9A-Fa-f]|[^0-9A-Fa-f]) return INVALID_HEX;
+\"({str_sym_s_t_not_esc_seq}|{valid_esc_seq}|{hex_esc_seq})*\"                      return str;
+\"({str_sym_s_t_not_esc_seq}|{valid_esc_seq}|{hex_esc_seq})*                        return ERROR_UNCLOSED_STRING;
+\"({str_sym_s_t_not_esc_seq}|{valid_esc_seq}|{hex_esc_seq})*invalid_esc_seq         return ERROR_ESCAPE_SEQUENCE;
+\"({str_sym_s_t_not_esc_seq}|{valid_esc_seq}|{hex_esc_seq})*invalid_hex_esc_seq     return INVALID_HEX;
 {whitespace}                                                                        ;
 .                                                                                   return ERROR;
 
