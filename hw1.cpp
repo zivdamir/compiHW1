@@ -50,7 +50,7 @@ const char* token_array[] = {
   };
 void handleLineFeed(string* str,char linefeed_symb,int index);
 void showToken(const char * token_type);
-
+void handleHexInString(string *str, int index);
 void print_illegal_sign_error_and_exit()
 {
     char* illegal_sign = yytext;
