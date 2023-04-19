@@ -121,7 +121,9 @@ void showToken(const char * token_type)
     //token name is "token_type"
     string str_token_type = string(token_type);
     string yytext_string = string(yytext);
+    string hex_identifier = "x";
     string escape_chars = "nr0t\"\\";
+    
     if (str_token_type != "STRING")
     {
         cout << yylineno << " " << token_type << " " << yytext << endl;
@@ -134,6 +136,11 @@ void showToken(const char * token_type)
             if(yytext_string[i]=='\\')/**/ 
             {
                 char c = yytext_string[i + 1];
+                if(hex_identifier.find(c) !=std::string::npos)
+                {
+                    printf("ziv did not write anything . ok. \n");
+                    exit(-1);
+                }
                 if (escape_chars.find(c) != std::string::npos) /* c = str_token_type[i+1]
                     if c is in ['n','r','0','t',' " ','\',]*/
                     if ( c == 'n')
