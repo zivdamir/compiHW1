@@ -11,7 +11,7 @@ using std::endl;
 using std::string;
 
 extern int yylex();
-char* token_array[] = {
+const char* token_array[] = {
     "AUTO",
     "VOID",
     "INT",
@@ -46,7 +46,10 @@ char* token_array[] = {
     "ERROR_UNCLOSED_STRING",
     "ERROR_ESCAPE_SEQUENCE",
     "ERROR_INVALID_HEX",
+    "OVERRIDE"
   };
+
+void showToken(const char * token_type);
 
 void print_illegal_sign_error_and_exit()
 {
