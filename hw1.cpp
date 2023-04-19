@@ -130,7 +130,7 @@ void showToken(const char * token_type)
     if (str_token_type != "STRING" )
     {
         if(str_token_type == "COMMENT //")
-            cout << "COMMENT //" << endl;
+            cout <<yylineno<<" "<<"COMMENT //" << endl;
         else{
         cout << yylineno << " " << token_type << " " << yytext << endl;
         }
@@ -175,7 +175,10 @@ void showToken(const char * token_type)
                 
                 
             }
+
         }
+                    std::cout << yylineno <<" "<<str_token_type<<" "<< yytext_string << std::endl;
+
     }
     }
 }
