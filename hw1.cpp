@@ -138,7 +138,7 @@ void showToken(const char * token_type)
                 char c = yytext_string[i + 1];
                 if(hex_identifier.find(c) !=std::string::npos)
                 {
-                    printf("ziv did not write anything . ok. \n");
+                    handleHexInString(&yytext_string, i);
                     exit(-1);
                 }
                 if (escape_chars.find(c) != std::string::npos) /* c = str_token_type[i+1]
@@ -165,16 +165,37 @@ void showToken(const char * token_type)
                     }
                     std::cout << yylineno <<" "<<str_token_type<<" "<< yytext_string << std::endl
                     
-                {
                 
-                }
                 
             }
         }
     }
     }
 }
-void handleLineFeed(string* str,char linefeed_symb,int index)
+void handleHexInString(string *str, int index){
+    string s = *str;
+    int s_len = s.length();
+    bool is_invalid_scnd_hex_digit = s[index + 2] < '0' || s[index + 2] > '7'; // might be 9 instead of 7? TODO
+    bool is_invalid_third_hex_digit = s[index + 3] < '0' || (s[index + 3] > '9' && s[index + 3] < 'A') || (s[index + 3] > 'F' && s[index + 3] < 'a') || s[index + 3] > 'f';
+
+    if (index + 3 >= s_len || is_invalid_scnd_hex_digit || is_invalid_third_hex_digit)
+    {
+        //less then two symbols after \x
+        std::cout << "Error undefined escape sequence " << s.erase(0,index+1).substr(0,3) << std::endl;
+        exit(0);
+    }
+    std::string hex_val = s.std::string::substr(index+2,2);
+    s[index] = std::stoi(hex_val, 0, 16);
+    if(s[index] < 0 || s[index] > 127)
+    {
+        //error
+        std::cout << "Error undefined escape sequence " << std::string(yytext).erase(0,index+1).substr(0,3) << std::endl;
+        exit(0);
+    }
+    s.std::string::erase(index+1, 3);
+
+}
+void handleLineFeed(string *str, char linefeed_symb, int index)
 {
     (*str)[index] = linefeed_symb;
     (*str).erase(index + 1, 1);
