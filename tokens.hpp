@@ -38,6 +38,7 @@
     ERROR_UNCLOSED_STRING = 31,
     ERROR_ESCAPE_SEQUENCE = 32,
     ERROR_INVALID_HEX = 32,
+    OVERRIDE = 33
   };
   extern int yylineno;
   extern char* yytext;

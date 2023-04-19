@@ -49,10 +49,10 @@ continue                                                                        
 \/\/[^\n\r]*                                                                        return COMMENT;
 {letter}{letter_digit}*                                                             return ID;
 ([1-9]+{digit}*)|0                                                                  return NUM;
-\"({str_sym_s_t_not_esc_seq}|{valid_esc_seq}|{hex_esc_seq})*\"                      return str;
+\"({str_sym_s_t_not_esc_seq}|{valid_esc_seq}|{hex_esc_seq})*\"                      return STRING;
 \"({str_sym_s_t_not_esc_seq}|{valid_esc_seq}|{hex_esc_seq})*(\\)?                   return ERROR_UNCLOSED_STRING;
-\"({str_sym_s_t_not_esc_seq}|{valid_esc_seq}|{hex_esc_seq})*invalid_esc_seq         return ERROR_ESCAPE_SEQUENCE;
-\"({str_sym_s_t_not_esc_seq}|{valid_esc_seq}|{hex_esc_seq})*invalid_hex_esc_seq     return ERROR_INVALID_HEX;
+\"({str_sym_s_t_not_esc_seq}|{valid_esc_seq}|{hex_esc_seq})*({invalid_esc_seq})      return ERROR_ESCAPE_SEQUENCE;
+\"({str_sym_s_t_not_esc_seq}|{valid_esc_seq}|{hex_esc_seq})*({invalid_hex_esc_seq})   return ERROR_INVALID_HEX;
 {whitespace}                                                                        ;
 .                                                                                   return ERROR_ILLEGAL_SIGN;
 
