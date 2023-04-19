@@ -120,24 +120,51 @@ void showToken(const char * token_type)
     //<line_no> <token_name> <value>
     //token name is "token_type"
     string str_token_type = string(token_type);
+    string yytext_string = string(yytext);
     string escape_chars = "nr0t\"\\";
     if (str_token_type != "STRING")
     {
         cout << yylineno << " " << token_type << " " << yytext << endl;
     }
     else{
+    if (str_token_type == "STRING"){
+    /**/
         for (int i = 0; i < str_token_type.size()-1 ; i++)
         {
-            if(str_token_type[i]=='\\') 
+            if(yytext_string[i]=='\\')/**/ 
             {
-                if(escape_chars.find(str_token_type[i+1]) != std::string::npos)
+                char c = yytext_string[i + 1];
+                if (escape_chars.find(c) != std::string::npos) /* c = str_token_type[i+1]
+                    if c is in ['n','r','0','t',' " ','\',]*/
+                    if ( c == 'n')
+                    {
+                        handleLineFeed(&yytext_string, '\n', i);
+                    }
+                    if ( c == 'r')
+                    {
+                        handleLineFeed(&yytext_string, '\r', i);
+                    }
+                    if (c == '0'){
+                        handleLineFeed(&yytext_string, '\0', i);
+                    }
+                    if (c == 't'){
+                        handleLineFeed(&yytext_string, '\t', i);
+                    }
+                    if (c == '"'){
+                        handleLineFeed(&yytext_string, '\"', i);
+                    }
+                    if (c == '\\'){
+                        handleLineFeed(&yytext_string, '\\', i);
+                    }
+                    std::cout << yylineno <<" "<<str_token_type<<" "<< yytext_string << std::endl
+                    
                 {
-                //extract string.    
-                handleLineFeed(&str_token_type, '\n', i);
+                
                 }
                 
             }
         }
+    }
     }
 }
 void handleLineFeed(string* str,char linefeed_symb,int index)
