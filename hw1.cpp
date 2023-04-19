@@ -127,9 +127,13 @@ void showToken(const char * token_type)
     string hex_identifier = "x";
     string escape_chars = "nr0t\"\\";
     
-    if (str_token_type != "STRING")
+    if (str_token_type != "STRING" )
     {
+        if(str_token_type == "COMMENT //")
+            cout << "COMMENT //" << endl;
+        else{
         cout << yylineno << " " << token_type << " " << yytext << endl;
+        }
     }
     else{
     if (str_token_type == "STRING"){
