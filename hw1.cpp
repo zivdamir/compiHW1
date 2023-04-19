@@ -42,10 +42,10 @@ char* token_array[] = {
 	"ID",
     "NUM",
     "STRING",
-    "ERROR",
-    "ERROR_UNCLOSED_STRING",
     "ERROR_ILLEGAL_SIGN",
+    "ERROR_UNCLOSED_STRING",
     "ERROR_ESCAPE_SEQUENCE",
+    "ERROR_INVALID_HEX",
   };
 
 void print_illegal_sign_error_and_exit()
@@ -62,23 +62,39 @@ void print_unclosed_string_error_and_exit()
 }
 void print_escape_sequence_error_and_exit()
 {
-    int yytext_len = strlen(yytext);
-     char last_char = yytext[yytext_len-1];
-
-    if(last_char == '\\')
-    {
-        print_illegal_sign_error_and_exit();
-    }
-    cout << "Error undefined escape sequence ";
-    if(yytext is in the exercise definition& is \q)
-    {
-        cout<< "q" << endl;
-    }
-    else if(yytext is in the exercise definition& is \q)
-    {
-        cout << "xFT" << endl;
-    }
+    char malicious_char = yytext[strlen(yytext)-1];
+    cout << "Error undefined escape sequence " << malicious_char << endl;
     exit(0);
+
+}
+void print_hex_escape_sequence_errorand_exit()
+{
+    int yytext_len = strlen(yytext);
+    
+
+    char two_char_before_last = yytext[yytext_len-3];
+    char one_char_before_last = yytext[yytext_len-2];
+    char last_char = yytext[yytext_len-1];
+
+    cout << "Error undefined escape sequence ";
+
+    // case one: "some_str" +'\\' + 'x' + 'letter'
+    // case two: "some_str" +'\\' + 'x' 
+    // comment: some string might end with 'x' and then we have 'x' + '\\' + 'x'
+    // but if it so then we will not have '\\'+'x' + '\\' + 'x'
+    
+    if(yytext_len >= 4 && yytext[yytext_len-4] == '\\' && two_char_before_last == 'x')
+    {
+        cout << yytext+(yytext_len-3) << endl;
+    }
+    else if(two_char_before_last == '\\' && one_char_before_last == 'x')
+    {
+        cout << yytext+(yytext_len-2) << endl;
+    }
+    else
+    {
+        cout << last_char << endl;
+    }
 }
 
 void tokenHandler(int token)
@@ -112,8 +128,6 @@ void showToken(const char * token_type)
     else{
         for (int i = 0; i < str_token_type.size()-1 ; i++)
         {
-            
-           
             if(str_token_type[i]=='\\') 
             {
                 if(escape_chars.find(str_token_type[i+1]) != std::string::npos)

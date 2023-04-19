@@ -34,10 +34,10 @@
     ID = 27,
     NUM = 28,
     STRING = 29,
-    ERROR = 30,
-    ERROR_UNCLOSED_STRING=31,
-    ERROR_ILLEGAL_SIGN=32,
-    ERROR_ESCAPE_SEQUENCE=33,
+    ERROR_ILLEGAL_SIGN = 30,
+    ERROR_UNCLOSED_STRING = 31,
+    ERROR_ESCAPE_SEQUENCE = 32,
+    ERROR_INVALID_HEX = 32,
   };
   extern int yylineno;
   extern char* yytext;
