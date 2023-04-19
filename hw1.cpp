@@ -48,9 +48,9 @@ const char* token_array[] = {
     "ERROR_INVALID_HEX",
     "OVERRIDE"
   };
-void handleLineFeed(string* str,char linefeed_symb,int index);
+string* handleLineFeed(string* str,char linefeed_symb,int index);
 void showToken(const char * token_type);
-void handleHexInString(string *str, int index);
+string* handleHexInString(string *str, int index);
 void print_illegal_sign_error_and_exit()
 {
     char* illegal_sign = yytext;
@@ -145,30 +145,30 @@ void showToken(const char * token_type)
                 char c = yytext_string[i + 1];
                 if(hex_identifier.find(c) !=std::string::npos)
                 {
-                    handleHexInString(&yytext_string, i);
-                    exit(-1);
+                    yytext_string = *(handleHexInString(&yytext_string, i));
+                    
                 }
                 if (escape_chars.find(c) != std::string::npos) /* c = str_token_type[i+1]
                     if c is in ['n','r','0','t',' " ','\',]*/
                     if ( c == 'n')
                     {
-                        handleLineFeed(&yytext_string, '\n', i);
+                        yytext_string = *(handleLineFeed(&yytext_string, '\n', i));
                     }
-                    if ( c == 'r')
+                    else if ( c == 'r')
                     {
-                        handleLineFeed(&yytext_string, '\r', i);
+                        yytext_string = *(handleLineFeed(&yytext_string, '\n', i));
                     }
-                    if (c == '0'){
-                        handleLineFeed(&yytext_string, '\0', i);
+                    else if (c == '0'){
+                        yytext_string = *(handleLineFeed(&yytext_string, '\n', i));
                     }
-                    if (c == 't'){
-                        handleLineFeed(&yytext_string, '\t', i);
+                    else if (c == 't'){
+                        yytext_string = *(handleLineFeed(&yytext_string, '\n', i));
                     }
-                    if (c == '"'){
-                        handleLineFeed(&yytext_string, '\"', i);
+                    else if (c == '"'){
+                        yytext_string = *(handleLineFeed(&yytext_string, '\n', i));
                     }
-                    if (c == '\\'){
-                        handleLineFeed(&yytext_string, '\\', i);
+                    else if (c == '\\'){
+                        yytext_string = *(handleLineFeed(&yytext_string, '\n', i));
                     }
                     std::cout << yylineno <<" "<<str_token_type<<" "<< yytext_string << std::endl;
                     
@@ -182,7 +182,7 @@ void showToken(const char * token_type)
     }
     }
 }
-void handleHexInString(string *str, int index){
+string* handleHexInString(string *str, int index){
     string s = *str;
     int s_len = s.length();
     bool is_invalid_scnd_hex_digit = s[index + 2] < '0' || s[index + 2] > '7'; // might be 9 instead of 7? TODO
@@ -203,12 +203,13 @@ void handleHexInString(string *str, int index){
         exit(0);
     }
     s.std::string::erase(index+1, 3);
-
+    return &s;
 }
-void handleLineFeed(string *str, char linefeed_symb, int index)
+string* handleLineFeed(string *str, char linefeed_symb, int index)
 {
     (*str)[index] = linefeed_symb;
     (*str).erase(index + 1, 1);
+    return str;
 }
 int main(){
 	int token;
