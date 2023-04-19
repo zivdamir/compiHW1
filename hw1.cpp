@@ -48,7 +48,7 @@ const char* token_array[] = {
     "ERROR_INVALID_HEX",
     "OVERRIDE"
   };
-
+void handleLineFeed(string* str,char linefeed_symb,int index);
 void showToken(const char * token_type);
 
 void print_illegal_sign_error_and_exit()
@@ -166,7 +166,7 @@ void showToken(const char * token_type)
                     if (c == '\\'){
                         handleLineFeed(&yytext_string, '\\', i);
                     }
-                    std::cout << yylineno <<" "<<str_token_type<<" "<< yytext_string << std::endl
+                    std::cout << yylineno <<" "<<str_token_type<<" "<< yytext_string << std::endl;
                     
                 {
                 
