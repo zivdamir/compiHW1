@@ -12,7 +12,7 @@ using std::string;
 
 extern int yylex();
 const char* token_array[] = {
-    "AUTO",
+    "AUTO", 
     "VOID",
     "INT",
     "BYTE",
@@ -66,7 +66,10 @@ void print_unclosed_string_error_and_exit()
 void print_escape_sequence_error_and_exit()
 {   
     string yytext_string = string(yytext);
-    string malicious_string = yytext_string.substr(2, yytext_string.size() - 1);
+    if(yytext_string[yytext_string.size()-1]='\\'){
+        print_unclosed_string_error_and_exit();
+    }
+    string malicious_string = yytext_string.substr(1, yytext_string.size() - 1);
     char malicious_char = yytext[strlen(yytext) - 1];
     cout << "Error undefined escape sequence " << malicious_string << endl;
     exit(0);
