@@ -64,9 +64,11 @@ void print_unclosed_string_error_and_exit()
     exit(0);
 }
 void print_escape_sequence_error_and_exit()
-{
-    char malicious_char = yytext[strlen(yytext)-1];
-    cout << "Error undefined escape sequence " << malicious_char << endl;
+{   
+    string yytext_string = string(yytext);
+    string malicious_string = yytext_string.substr(2, yytext_string.size() - 1);
+    char malicious_char = yytext[strlen(yytext) - 1];
+    cout << "Error undefined escape sequence " << malicious_string << endl;
     exit(0);
 
 }
@@ -159,6 +161,7 @@ void showToken(const char * token_type)
                 }
                 if (escape_chars.find(c) != std::string::npos) /* c = str_token_type[i+1]
                     if c is in ['n','r','0','t',' " ','\',]*/
+                {
                     if ( c == 'n')
                     {
                         yytext_string = handleLineFeed(yytext_string, '\n', i);
@@ -179,8 +182,8 @@ void showToken(const char * token_type)
                     else if (c == '\\'){
                         yytext_string = handleLineFeed(yytext_string, '\\', i);
                     }
-                    std::cout << yylineno <<" "<<str_token_type<<" "<< yytext_string << std::endl;
-                    
+                    //std::cout << yylineno <<" "<<str_token_type<<" "<< yytext_string << std::endl;
+                }   
                 
                 
             }
@@ -224,7 +227,8 @@ string handleLineFeed(string str, char linefeed_symb, int index)
 int main(){
 	int token;
 	while(token = yylex()) {
-        showToken(token_array[token]);
+        tokenHandler(token);
+       
     }
     return 0;
 }
