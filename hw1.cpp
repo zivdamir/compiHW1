@@ -63,19 +63,50 @@ void print_unclosed_string_error_and_exit()
     cout << "Error unclosed string"  << endl;
     exit(0);
 }
+
+
+
 void print_escape_sequence_error_and_exit()
 {   
     string yytext_string = string(yytext);
-    if(yytext_string[yytext_string.size()]='\\'){
+    if(yytext_string[yytext_string.size()-1]=='\\'){
         print_unclosed_string_error_and_exit();
     }
-    string malicious_string = yytext_string.substr(1, yytext_string.size() - 1);
-    char malicious_char = yytext[strlen(yytext) - 1];
-    cout << "Error undefined escape sequence " << malicious_string << endl;
+
+    int yytext_len = strlen(yytext);
+    //cout<<"this is me: "<<yytext_string<<endl;
+
+    char two_char_before_last = yytext[yytext_len-3];
+    char one_char_before_last = yytext[yytext_len-2];
+    char last_char = yytext[yytext_len-1];
+
+    cout << "Error undefined escape sequence ";
+
+    // case one: "some_str" +'\\' + 'x' + 'letter'
+    // case two: "some_str" +'\\' + 'x' 
+    // comment: some string might end with 'x' and then we have 'x' + '\\' + 'x'
+    // but if it so then we will not have '\\'+'x' + '\\' + 'x'
+    
+    if(yytext_len >= 4 && yytext[yytext_len-4] == '\\' && two_char_before_last == 'x')
+    {
+        cout << yytext+(yytext_len-3) << endl;
+    }
+    else if(two_char_before_last == '\\' && one_char_before_last == 'x')
+    {
+        cout << yytext+(yytext_len-2) << endl;
+    }
+    else if(one_char_before_last == '\\' && last_char == 'x')
+    {
+        cout << last_char << endl;
+    }
+    else{
+        char malicious_char = yytext[strlen(yytext) - 1];
+        cout << "Error undefined escape sequence " << malicious_char << endl;
+    }
     exit(0);
 
 }
-void print_hex_escape_sequence_errorand_exit()
+/*void print_hex_escape_sequence_errorand_exit()
 {
     int yytext_len = strlen(yytext);
     
@@ -103,10 +134,11 @@ void print_hex_escape_sequence_errorand_exit()
     {
         cout << last_char << endl;
     }
-}
+}*/
 
 void tokenHandler(int token)
 {
+    //cout<<token_array[token]<<endl;
     if (token == ERROR_ILLEGAL_SIGN)
     {
         print_illegal_sign_error_and_exit();
@@ -119,6 +151,10 @@ void tokenHandler(int token)
     {
         print_escape_sequence_error_and_exit();
     }
+    //else if(token == ERROR_INVALID_HEX)
+    //{
+    //    print_hex_escape_sequence_errorand_exit();
+    //}
 
     
     showToken(token_array[token]);
