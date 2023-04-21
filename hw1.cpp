@@ -145,8 +145,14 @@ void showToken(const char * token_type)
     else{
     if (str_token_type == "STRING"){
     /**/
-    
+        
+        if(yytext_string.size()<=2)
+        {
+            std::cout << yylineno <<" "<<str_token_type<<" "<< std::endl;
+            return;
+        }
         yytext_string = yytext_string.substr(1, len - 2); // removes the " " from the string.
+        
         for (int i = 0; i < yytext_string.size() - 1; i++)
         {
             //cout << continue;
@@ -159,8 +165,8 @@ void showToken(const char * token_type)
                 
                 if(hex_identifier.find(c) !=std::string::npos)
                 {
-                    yytext_string = handleHexInString(yytext_string, i);
                     
+                    yytext_string = handleHexInString(yytext_string, i);
                 }
                 if (escape_chars.find(c) != std::string::npos) /* c = str_token_type[i+1]
                     if c is in ['n','r','0','t',' " ','\',]*/
@@ -206,7 +212,7 @@ string handleHexInString(string str, int index){
     if (index + 3 >= s_len || is_invalid_scnd_hex_digit || is_invalid_third_hex_digit)
     {
         //less then two symbols after \x
-        std::cout << "Error undefined escape sequence " << copy.erase(0,index+1).substr(0,3) << std::endl;
+        std::cout << "Error undefined escape sequence  " << copy.erase(0,index+1).substr(0,3) << std::endl;//problematic line
         exit(0);
     }
     std::string hex_val = copy.std::string::substr(index+2,2);
