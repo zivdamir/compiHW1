@@ -66,7 +66,7 @@ void print_unclosed_string_error_and_exit()
 void print_escape_sequence_error_and_exit()
 {   
     string yytext_string = string(yytext);
-    if(yytext_string[yytext_string.size()-1]='\\'){
+    if(yytext_string[yytext_string.size()]='\\'){
         print_unclosed_string_error_and_exit();
     }
     string malicious_string = yytext_string.substr(1, yytext_string.size() - 1);
