@@ -15,7 +15,8 @@ whitespace                                      ([ \t\n\r])
 digit                                           ([0-9])
 letter                                          ([a-zA-Z])
 letter_digit                                    ([a-zA-Z0-9])
-str_sym_s_t_not_esc_seq                         ([ !#-\[\]-~])
+str_sym_s_t_not_esc_seq                         ([ !#-\[\]-~\t])
+
 
 
 %%
@@ -49,8 +50,8 @@ continue                                                                        
 {letter}{letter_digit}*                                                             return ID;
 ([1-9]+{digit}*)|0                                                                  return NUM;
 \"(({str_sym_s_t_not_esc_seq}|{valid_esc_seq}|{hex_esc_seq})*)\"                    return STRING;
-\"({str_sym_s_t_not_esc_seq}|{valid_esc_seq}|{hex_esc_seq})*[//]?                   return ERROR_UNCLOSED_STRING;
-\"({str_sym_s_t_not_esc_seq}|{valid_esc_seq}|{hex_esc_seq})*({invalid_esc_seq}|\\x([^0-7][0-9A-Fa-f]|[0-7][^0-9A-Fa-f]|[^0-7][^0-9A-Fa-f]|[^0-9A-Fa-f]))     return ERROR_ESCAPE_SEQUENCE;
+\"(({str_sym_s_t_not_esc_seq}|{valid_esc_seq}|{hex_esc_seq})*)[\\]?                   return ERROR_UNCLOSED_STRING;
+\"(({str_sym_s_t_not_esc_seq}|{valid_esc_seq}|{hex_esc_seq})*)({invalid_esc_seq}|\\x([^0-7][0-9A-Fa-f]|[0-7][^0-9A-Fa-f]|[^0-7][^0-9A-Fa-f]|[^0-9A-Fa-f]))     return ERROR_ESCAPE_SEQUENCE;
 {whitespace}                                                                        ;
 .                                                                                   return ERROR_ILLEGAL_SIGN;
 
