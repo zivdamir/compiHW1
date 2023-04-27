@@ -108,7 +108,7 @@ void print_escape_sequence_error_and_exit()
 
 void tokenHandler(int token)
 {
-   //         cout<< "Mein name ist Levi, und ich will entschuldigung sagen: "<< token_array[token] << endl;
+   
 
     if (token == ERROR_ILLEGAL_SIGN)
     {
